@@ -1,4 +1,3 @@
-User customization applied.
 absl-py==2.3.1
 annotated-doc==0.0.4
 annotated-types==0.7.0
