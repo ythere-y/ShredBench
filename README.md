@@ -130,6 +130,8 @@ We provide scripts to evaluate various MLLMs. For example, to evaluate **Qwen-VL
 **Note**: You need to configure your API keys (e.g., `DASHSCOPE_API_KEY`) in the environment variables or config file before running.
 
 ```bash
+python surpress.py
+
 python qwen_lv_flash.py
 
 python metric.py
