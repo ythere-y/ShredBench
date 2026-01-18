@@ -1,17 +1,14 @@
 import os
 import subprocess
 
-# 配置路径
 INPUT_DIR = "final_renders"
 OUTPUT_DIR = "final_result"
 
-# 确保输出目录存在
 if not os.path.exists(OUTPUT_DIR):
     os.makedirs(OUTPUT_DIR)
     print(f"已创建输出目录: {OUTPUT_DIR}")
 
 def main():
-    # 获取所有 png 文件
     files = [f for f in os.listdir(INPUT_DIR) if f.lower().endswith(".png")]
     total = len(files)
     
@@ -22,17 +19,10 @@ def main():
     print(f"找到 {total} 张图片，开始压缩...")
 
     for i, filename in enumerate(files):
-        # 构建输入输出路径
         input_path = os.path.join(INPUT_DIR, filename)
-        
-        # 将后缀从 .png 换成 .jpg
         name_no_ext = os.path.splitext(filename)[0]
         output_filename = f"{name_no_ext}.jpg"
         output_path = os.path.join(OUTPUT_DIR, output_filename)
-        
-        # 构建 ffmpeg 命令
-        # -y 参数表示如果目标文件存在则直接覆盖，不询问
-        # -loglevel error 减少输出干扰，只显示报错
         cmd = [
             "ffmpeg", "-y",
             "-i", input_path,
