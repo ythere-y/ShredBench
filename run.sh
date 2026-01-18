@@ -1,7 +1,7 @@
 #!/bin/bash
 
-PREPROCESS_SCRIPT="preprocess.py"
-BLENDER_SCRIPT="blenderprocess.py"
+PREPROCESS_SCRIPT="preprocess_.py"
+BLENDER_SCRIPT="blenderprocess_.py"
 
 if [[ ! -f "$PREPROCESS_SCRIPT" ]]; then
     echo "Error: Script $PREPROCESS_SCRIPT not found."
