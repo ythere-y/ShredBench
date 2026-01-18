@@ -4,7 +4,6 @@ import statistics
 import markdown
 import re
 from tqdm import tqdm
-# 确保安装了这两个库: pip install table_recognition_metric markdown
 from table_recognition_metric import TEDS
 
 def get_args():
@@ -35,16 +34,8 @@ def parse_category(rel_path):
     return category, subcategory
 
 def clean_html_attributes(html_str):
-    """
-    【核心修复】
-    使用正则清理 HTML 中的空属性，防止 int('') 报错。
-    例如: colspan="" -> colspan="1"
-    """
     if not html_str: return html_str
-    
-    # 将 colspan="" 或 colspan='' 替换为 colspan="1"
     html_str = re.sub(r'colspan=["\']["\']', 'colspan="1"', html_str)
-    # 将 rowspan="" 或 rowspan='' 替换为 rowspan="1"
     html_str = re.sub(r'rowspan=["\']["\']', 'rowspan="1"', html_str)
     
     return html_str
@@ -53,13 +44,8 @@ def md_to_html(md_content):
     if not md_content:
         return ""
     try:
-        # 1. Markdown 转 HTML 片段
         html_fragment = markdown.markdown(md_content, extensions=['tables'])
-        
-        # 2. 包裹完整的 HTML 结构
         full_html = f"<html><body>{html_fragment}</body></html>"
-        
-        # 3. 【关键步骤】清洗非法属性
         clean_html = clean_html_attributes(full_html)
         
         return clean_html
@@ -74,7 +60,6 @@ def main():
     
     print("Initializing TEDS metric...")
     try:
-        # structure_only=False: 比较结构+内容
         teds_metric = TEDS(structure_only=False)
     except Exception as e:
         print(f"【严重错误】TEDS 初始化失败: {e}")
@@ -107,14 +92,12 @@ def main():
                 if gt_md is None or pred_md is None:
                     continue
                 
-                # 转换并清洗 HTML
                 pred_html = md_to_html(pred_md)
                 gt_html = md_to_html(gt_md)
 
                 try:
                     score = teds_metric(pred_html, gt_html)
                 except Exception as e:
-                    # 如果还是报错，打印出来并跳过
                     print(f"\n[Skip] Error calculating {file}: {e}")
                     # print(f"Bad HTML: {pred_html}") # 调试用
                     score = 0.0
@@ -130,7 +113,6 @@ def main():
         print("No table files evaluated.")
         return
 
-    # 统计与报告
     def get_stats(filter_func):
         subset = [r for r in records if filter_func(r)]
         if not subset: return 0.0, 0
