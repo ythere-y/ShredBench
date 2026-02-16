@@ -110,11 +110,34 @@ mkdir blender
 tar -xvf blender-4.0.2-linux-x64.tar.xz -C blender --strip-components=1
 rm blender-4.0.2-linux-x64.tar.xz
 
-# 2. Download and setup Headless Chrome for document rendering
-wget [https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/120.0.6099.109/linux64/chrome-linux64.zip](https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/120.0.6099.109/linux64/chrome-linux64.zip)
-unzip chrome-linux64.zip
-mv chrome-linux64 chrome_bin
-rm chrome-linux64.zip
+apt-get update
+apt-get install -y libgbm1 libxshmfence-dev
+apt-get install -y wget unzip libnss3 libgconf-2-4 libxi6 libglib2.0-0 \
+libx11-xcb1 libxcomposite1 libxcursor1 libxdamage1 libxfixes3 libxi6 \
+libxrandr2 libxss1 libxtst6 libappindicator1 libasound2 libatk1.0-0 \
+libc6 ca-certificates fonts-liberation lsb-release xdg-utils
+
+# 1. 创建 chrome_bin 目录并进入
+mkdir -p chrome_bin
+cd chrome_bin
+
+# 2. 下载 Chrome (Linux版)
+echo "正在下载 Chrome..."
+wget -q https://storage.googleapis.com/chrome-for-testing-public/123.0.6312.122/linux64/chrome-linux64.zip
+unzip -q chrome-linux64.zip
+
+# 3. 下载对应的 ChromeDriver
+echo "正在下载 ChromeDriver..."
+wget -q https://storage.googleapis.com/chrome-for-testing-public/123.0.6312.122/linux64/chromedriver-linux64.zip
+unzip -q chromedriver-linux64.zip
+
+# 4. 赋予执行权限
+chmod +x chrome-linux64/chrome
+chmod +x chromedriver-linux64/chromedriver
+
+# 5. 返回上一级目录（回到脚本所在位置）
+cd ..
+echo "✅ 安装完成！目录结构已准备好。"
 
 # 3. Install Python dependencies
 pip install -r requirements.txt
