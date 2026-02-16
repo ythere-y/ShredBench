@@ -31,7 +31,7 @@ echo "--------------------------------------"
 echo "[2/2] Starting Blender processing phase..."
 echo "--------------------------------------"
 
-python "$BLENDER_SCRIPT"
+CUDA_VISIBLE_DEVICES=1 ./blender/blender -b -P "$BLENDER_SCRIPT"
 
 if [ $? -eq 0 ]; then
     echo "✅ Blender processing completed successfully!"
